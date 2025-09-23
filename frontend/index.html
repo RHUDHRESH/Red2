@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geo-Strategist AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #0F172A; /* Slate 900 */
+            color: #E2E8F0; /* Slate 200 */
+        }
+        /* Add a decorative background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: radial-gradient(circle at 20% 20%, #4f46e544, transparent 30%),
+                              radial-gradient(circle at 80% 70%, #7c3aed44, transparent 30%);
+            animation: move-glow 15s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes move-glow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .sidebar {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-item { 
+            transition: all 0.2s; 
+        }
+        .sidebar-item.active, .sidebar-item:hover { 
+            background-color: rgba(79, 70, 229, 0.8); 
+            color: white; 
+            transform: translateX(4px);
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.5);
+        }
+        .sidebar-item.active svg, .sidebar-item:hover svg {
+            color: white;
+        }
+
+        .view { 
+            display: none; 
+            animation: fadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .view.active { 
+            display: block; 
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6); /* Slate 800 with transparency */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        #map { 
+            height: 100%; 
+            min-height: 500px; 
+            width: 100%; 
+            border-radius: 0.75rem; 
+            background-color: #1E293B; /* Slate 800 */
+        }
+
+        .spinner { 
+            border: 2px solid rgba(255, 255, 255, 0.2); 
+            border-top: 2px solid #818cf8; /* Indigo 300 */
+            border-radius: 50%; 
+            width: 16px; 
+            height: 16px; 
+            animation: spin 1s linear infinite; 
+        }
+
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    </style>
+</head>
+<body>
+    <!-- Legacy notice -->
+    <div style="background:#fde68a;color:#78350f;padding:10px 14px;font-family:system-ui, -apple-system, Segoe UI, Roboto, sans-serif;">
+      <b>Heads up:</b> This is the legacy static prototype. The full UI runs at
+      <a href="http://localhost:5173" style="color:#1f2937;text-decoration:underline">http://localhost:5173</a> (Vite dev server).
+    </div>
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 sidebar shadow-lg flex flex-col fixed h-full">
+            <div class="p-4 border-b border-slate-700/50">
+                <h1 class="text-xl font-bold text-white">Geo-Strategist</h1>
+                <p class="text-xs text-slate-400">v1.2.0 Final</p>
+            </div>
+            <nav class="flex-grow p-2 space-y-1 overflow-y-auto">
+                <a href="#" class="sidebar-item group flex items-center p-3 rounded-lg font-medium" data-view="preflight">
+                   <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+                   Preflight
+                </a>
+                <a href="#" class="sidebar-item group flex items-center p-3 rounded-lg font-medium" data-view="market-analysis">
+                   <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                   Market Analysis
+                </a>
+                 <!-- Other sidebar items -->
+                <a href="#" class="sidebar-item group flex items-center p-3 rounded-lg font-medium" data-view="icp-builder">
+                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    ICP & Cohorts
+                </a>
+                 <a href="#" class="sidebar-item group flex items-center p-3 rounded-lg font-medium" data-view="cohort-strategy">
+                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    Cohort Strategy
+                </a>
+                <a href="#" class="sidebar-item group flex items-center p-3 rounded-lg font-medium" data-view="outcome-charter">
+                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    Outcome Charter
+                </a>
+                <a href="#" class="sidebar-item group flex items-center p-3 rounded-lg font-medium" data-view="move-plan">
+                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    Move Plan
+                </a>
+                <a href="#" class="sidebar-item group flex items-center p-3 rounded-lg font-medium" data-view="creative-assets">
+                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    Creative Assets
+                </a>
+                <a href="#" class="sidebar-item group flex items-center p-3 rounded-lg font-medium" data-view="launch-pad">
+                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17l5-5-5-5M6 17l5-5-5-5"></path></svg>
+                    Launch Pad
+                </a>
+                <a href="#" class="sidebar-item group flex items-center p-3 rounded-lg font-medium" data-view="attribution">
+                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                    Attribution
+                </a>
+                <a href="#" class="sidebar-item group flex items-center p-3 rounded-lg font-medium" data-view="archive">
+                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                    Template Archive
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 overflow-y-auto ml-64">
+            <!-- Wizard Header -->
+            <div id="wizard-header" class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                    <nav id="breadcrumb" class="text-slate-300 text-sm space-x-2">
+                        <span data-step="preflight">Preflight</span>
+                        <span>›</span><span data-step="market">Market</span>
+                        <span>›</span><span data-step="icp">ICP</span>
+                        <span>›</span><span data-step="cohorts">Cohorts</span>
+                        <span>›</span><span data-step="outcome">Outcome</span>
+                        <span>›</span><span data-step="plan">Plan</span>
+                        <span>›</span><span data-step="assets">Assets</span>
+                        <span>›</span><span data-step="launch">Launch</span>
+                        <span>›</span><span data-step="attrib">Attribution</span>
+                    </nav>
+                    <div class="flex items-center gap-3">
+                        <label class="text-slate-300 text-sm flex items-center gap-2">
+                            <input id="auto-advance-toggle" type="checkbox" class="accent-indigo-500" /> Auto-advance
+                        </label>
+                        <button id="export-session-btn" class="bg-slate-700 hover:bg-slate-600 text-white text-sm px-3 py-1 rounded">Export Session</button>
+                        <label class="bg-slate-700 hover:bg-slate-600 text-white text-sm px-3 py-1 rounded cursor-pointer">
+                            Import Session<input id="import-session-input" type="file" accept="application/json" class="hidden" />
+                        </label>
+                        <button id="reset-session-btn" class="bg-slate-700 hover:bg-slate-600 text-white text-sm px-3 py-1 rounded">Reset</button>
+                    </div>
+                </div>
+                <div class="h-2 w-full bg-slate-800 rounded">
+                    <div id="progress-fill" class="h-2 bg-indigo-500 rounded" style="width: 0%"></div>
+                </div>
+            </div>
+            <!-- Preflight View -->
+            <div id="view-preflight" class="view">
+                <h2 class="text-3xl font-bold mb-1 text-slate-100">Preflight Check</h2>
+                <p class="text-slate-400 mb-6">Run environment checks before starting.</p>
+                <button id="run-preflight-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded">Run Checks</button>
+                <div id="preflight-results" class="mt-4 space-y-3 text-slate-300"></div>
+            </div>
+
+            <!-- Market Analysis View -->
+            <div id="view-market-analysis" class="view">
+                <h2 class="text-3xl font-bold mb-1 text-slate-100">Market Analysis</h2>
+                <p class="text-slate-400 mb-6">Enter an address to analyze the local market demand.</p>
+                <div class="glass-card p-6 rounded-xl">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <label for="address-input" class="block text-sm font-medium text-slate-300 mb-1">Business Address</label>
+                            <input type="text" id="address-input" class="w-full p-3 bg-slate-900/50 border border-slate-600 rounded-lg text-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., 123 Main St, Chennai, India">
+                            <button id="analyze-btn" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-5 rounded-lg flex items-center justify-center transition shadow-lg shadow-indigo-600/30">
+                                <span id="analyze-btn-text">Analyze Location</span>
+                                <div id="analyze-btn-spinner" class="spinner hidden ml-2"></div>
+                            </button>
+                            <div id="analysis-results" class="mt-6">
+                                <!-- Results will be dynamically inserted here -->
+                            </div>
+                            <div class="mt-4">
+                                <button id="market-next-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded disabled:opacity-40" disabled>Next: ICP & Cohorts</button>
+                            </div>
+                        </div>
+                        <div id="map-container" class="w-full h-full min-h-[400px] bg-slate-800 rounded-lg shadow-inner">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Views Remain Here -->
+            <div id="view-icp-builder" class="view">
+                <h2 class="text-3xl font-bold mb-1 text-slate-100">ICP & Cohorts</h2>
+                <p class="text-slate-400 mb-6">Ideal Customer Profiles and actionable cohorts generated from market data.</p>
+                <div id="icp-results-container" class="space-y-6">
+                    <!-- ICP cards will be dynamically inserted here -->
+                </div>
+                <div class="mt-4 flex gap-3 items-center">
+                    <button id="enrich-cohorts-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded disabled:opacity-40" disabled>Enrich Cohorts</button>
+                    <button id="icp-next-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded disabled:opacity-40" disabled>Next: Cohort Strategy</button>
+                    <span id="icp-status" class="text-slate-400 text-sm"></span>
+                </div>
+            </div>
+            <div id="view-cohort-strategy" class="view">
+                <h2 class="text-3xl font-bold mb-1 text-slate-100">Cohort Strategy</h2>
+                <p class="text-slate-400 mb-6">Pick a cohort and proceed to draft an Outcome Charter.</p>
+                <div id="cohort-strategy-container" class="space-y-4"></div>
+                <div class="mt-4 flex gap-3 items-center">
+                    <button id="go-outcome-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded disabled:opacity-40" disabled>Next: Draft Outcome Charter</button>
+                    <button id="cohort-next-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded disabled:opacity-40" disabled>Next: Outcome Charter</button>
+                    <span id="cohort-status" class="text-slate-400 text-sm ml-2"></span>
+                </div>
+            </div>
+
+            <div id="view-outcome-charter" class="view">
+                <h2 class="text-3xl font-bold mb-1 text-slate-100">Outcome Charter</h2>
+                <p class="text-slate-400 mb-6">Define a measurable objective for the selected cohort.</p>
+                <div class="space-y-3">
+                    <label for="goal-input" class="block text-sm text-slate-300">High-Level Goal</label>
+                    <input id="goal-input" class="w-full p-3 bg-slate-900/50 border border-slate-600 rounded-lg text-slate-200" placeholder="e.g., Increase weekday lunch orders by 25%" />
+                    <button id="draft-charter-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded">Draft Charter</button>
+                    <span id="charter-status" class="text-slate-400 text-sm ml-2"></span>
+                </div>
+                <div id="charter-container" class="mt-6"></div>
+                <div class="mt-4">
+                    <button id="charter-next-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded disabled:opacity-40" disabled>Next: Move Plan</button>
+                </div>
+            </div>
+
+            <div id="view-move-plan" class="view">
+                <h2 class="text-3xl font-bold mb-1 text-slate-100">Move Plan</h2>
+                <div class="mb-4 flex gap-3 items-center">
+                    <button id="generate-plan-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded">Generate Move Plan</button>
+                    <button id="plan-next-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded disabled:opacity-40" disabled>Next: Creative Assets</button>
+                    <span id="plan-status" class="text-slate-400 text-sm ml-2"></span>
+                </div>
+                <div id="plan-container" class="space-y-4"></div>
+            </div>
+
+            <div id="view-creative-assets" class="view">
+                <h2 class="text-3xl font-bold mb-1 text-slate-100">Creative Assets</h2>
+                <div class="mb-4 flex gap-3 items-center">
+                    <button id="generate-assets-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded">Generate Assets</button>
+                    <button id="assets-next-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded disabled:opacity-40" disabled>Next: Launch Pad</button>
+                    <span id="assets-status" class="text-slate-400 text-sm ml-2"></span>
+                </div>
+                <div id="assets-container" class="space-y-4"></div>
+            </div>
+
+            <div id="view-launch-pad" class="view">
+                <h2 class="text-3xl font-bold mb-1 text-slate-100">Launch Pad</h2>
+                <div class="mb-4 flex gap-3 items-center">
+                    <button id="build-schedule-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded">Build Schedule</button>
+                    <button id="simulate-launch-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded">Simulate Launch</button>
+                    <button id="launch-next-btn" class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded disabled:opacity-40" disabled>Next: Attribution</button>
+                    <span id="launch-status" class="text-slate-400 text-sm ml-2"></span>
+                </div>
+                <div id="schedule-container" class="space-y-4"></div>
+                <div id="launch-report-container" class="space-y-4"></div>
+            </div>
+
+            <div id="view-attribution" class="view">
+                <h2 class="text-3xl font-bold mb-1 text-slate-100">Attribution</h2>
+                <div id="attribution-container" class="space-y-4 text-slate-300">Run a simulation to see engagement metrics.</div>
+            </div>
+
+            <div id="view-archive" class="view">
+                <h2 class="text-3xl font-bold mb-1 text-slate-100">Template Archive</h2>
+                <div class="text-slate-400">Archive and recommendation UI can be wired next.</div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- GLOBAL STATE & UTILITIES ---
+        // Allow overriding backend via localStorage or ?backend= URL param
+        const urlBackend = new URLSearchParams(window.location.search).get('backend');
+        if (urlBackend) {
+            try { localStorage.setItem('BACKEND_URL', urlBackend); } catch (e) {}
+        }
+        const BACKEND_URL = (function() {
+            try { return localStorage.getItem('BACKEND_URL') || "http://localhost:8000"; }
+            catch (e) { return "http://localhost:8000"; }
+        })();
+        let appState = {
+            marketReport: null,
+            icpReport: null,
+            // ... other states
+            cohortStrategyReport: null,
+            selectedCohort: null,
+            outcomeCharter: null,
+            strikePlan: null,
+            assetPackage: null,
+            schedulePackage: null,
+            simulationReport: null,
+        };
+
+        function saveState() {
+            try { localStorage.setItem('APP_STATE', JSON.stringify(appState)); } catch (e) {}
+        }
+        function loadState() {
+            try {
+                const raw = localStorage.getItem('APP_STATE');
+                if (raw) appState = { ...appState, ...JSON.parse(raw) };
+            } catch (e) {}
+        }
+
+        function setLoading(btnId, textId, spinnerId, isLoading, defaultText) {
+            const button = document.getElementById(btnId);
+            const text = document.getElementById(textId);
+            const spinner = document.getElementById(spinnerId);
+            if (isLoading) {
+                button.disabled = true;
+                text.textContent = 'Processing...';
+                spinner.classList.remove('hidden');
+            } else {
+                button.disabled = false;
+                text.textContent = defaultText;
+                spinner.classList.add('hidden');
+            }
+        }
+
+        // --- SPA NAVIGATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            const views = document.querySelectorAll('.view');
+
+            function navigateToView(viewName) {
+                sidebarItems.forEach(item => {
+                    item.classList.toggle('active', item.dataset.view === viewName);
+                });
+                views.forEach(view => {
+                    view.classList.toggle('active', view.id === `view-${viewName}`);
+                });
+
+                if (viewName === 'preflight') initPreflight();
+                if (viewName === 'preflight') initPreflight();
+                if (viewName === 'market-analysis') initMarketAnalysis();
+                if (viewName === 'icp-builder') initICPBuilder();
+                if (viewName === 'cohort-strategy') initCohortStrategy();
+                if (viewName === 'outcome-charter') initOutcomeCharter();
+                if (viewName === 'move-plan') initMovePlan();
+                if (viewName === 'creative-assets') initCreativeAssets();
+                if (viewName === 'launch-pad') initLaunchPad();
+                updateProgressUI();
+            }
+            
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navigateToView(item.dataset.view);
+                });
+            });
+
+            // Wire session controls
+            const autoAdvToggle = document.getElementById('auto-advance-toggle');
+            try { autoAdvToggle.checked = localStorage.getItem('AUTO_ADVANCE') === '1'; } catch (e) {}
+            autoAdvToggle.addEventListener('change', () => {
+                try { localStorage.setItem('AUTO_ADVANCE', autoAdvToggle.checked ? '1' : '0'); } catch (e) {}
+            });
+            document.getElementById('export-session-btn').addEventListener('click', () => {
+                const blob = new Blob([JSON.stringify(appState, null, 2)], {type:'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = 'session.json'; a.click(); URL.revokeObjectURL(url);
+            });
+            document.getElementById('import-session-input').addEventListener('change', async (e) => {
+                const file = e.target.files[0]; if (!file) return;
+                try {
+                    const text = await file.text();
+                    const data = JSON.parse(text);
+                    appState = { ...appState, ...data };
+                    saveState();
+                    // Jump to furthest view
+                    routeToFurthest();
+                } catch (err) { alert('Invalid session file'); }
+            });
+            document.getElementById('reset-session-btn').addEventListener('click', () => {
+                try { localStorage.removeItem('APP_STATE'); } catch (e) {}
+                appState = { marketReport:null, icpReport:null, cohortStrategyReport:null, selectedCohort:null, outcomeCharter:null, strikePlan:null, assetPackage:null, schedulePackage:null, simulationReport:null };
+                saveState();
+                navigateToView('preflight');
+            });
+
+            // If we have deeper progress, land on the furthest completed view
+            if (appState.simulationReport) navigateToView('launch-pad');
+            else if (appState.schedulePackage) navigateToView('launch-pad');
+            else if (appState.assetPackage) navigateToView('creative-assets');
+            else if (appState.strikePlan) navigateToView('move-plan');
+            else if (appState.outcomeCharter) navigateToView('outcome-charter');
+            else if (appState.cohortStrategyReport) navigateToView('cohort-strategy');
+            else if (appState.icpReport) navigateToView('icp-builder');
+            else navigateToView('preflight');
+        });
+
+        function routeToFurthest() {
+            if (appState.simulationReport) navigateToView('launch-pad');
+            else if (appState.schedulePackage) navigateToView('launch-pad');
+            else if (appState.assetPackage) navigateToView('creative-assets');
+            else if (appState.strikePlan) navigateToView('move-plan');
+            else if (appState.outcomeCharter) navigateToView('outcome-charter');
+            else if (appState.cohortStrategyReport) navigateToView('cohort-strategy');
+            else if (appState.icpReport) navigateToView('icp-builder');
+            else navigateToView('preflight');
+        }
+
+        // --- GOOGLE MAPS & MARKET ANALYSIS ---
+        let map;
+        let autocomplete;
+
+        let mapMarkers = [];
+        let originMarker = null;
+        async function initGoogleMaps() {
+            // If already loaded, initialize immediately
+            if (window.google && window.google.maps) {
+                initializeMapAndAutocomplete();
+                return;
+            }
+            // Avoid injecting multiple times
+            if (document.querySelector('script[data-maps-loader="1"]')) return;
+
+            try {
+                const resp = await fetch(`${BACKEND_URL}/api/v1/config/public`);
+                if (!resp.ok) throw new Error('Failed to load public config');
+                const cfg = await resp.json();
+                const apiKey = cfg.google_maps_api_key;
+                if (!apiKey) {
+                    console.warn('No Google Maps key available from backend config.');
+                    return;
+                }
+                const script = document.createElement('script');
+                window.initializeMapAndAutocomplete = initializeMapAndAutocomplete;
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initializeMapAndAutocomplete`;
+                script.async = true;
+                script.defer = true;
+                script.setAttribute('data-maps-loader', '1');
+                document.head.appendChild(script);
+            } catch (e) {
+                console.error('Failed to initialize Google Maps:', e);
+            }
+        }
+        
+        function initializeMapAndAutocomplete() {
+            const chennai = { lat: 13.0827, lng: 80.2707 };
+            // Dark mode map style
+            const mapStyle = [
+                { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+                { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+                { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+                {
+                    featureType: "administrative.locality",
+                    elementType: "labels.text.fill",
+                    stylers: [{ color: "#d59563" }],
+                },
+                {
+                    featureType: "poi",
+                    elementType: "labels.text.fill",
+                    stylers: [{ color: "#d59563" }],
+                },
+                {
+                    featureType: "poi.park",
+                    elementType: "geometry",
+                    stylers: [{ color: "#263c3f" }],
+                },
+                {
+                    featureType: "poi.park",
+                    elementType: "labels.text.fill",
+                    stylers: [{ color: "#6b9a76" }],
+                },
+                {
+                    featureType: "road",
+                    elementType: "geometry",
+                    stylers: [{ color: "#38414e" }],
+                },
+                {
+                    featureType: "road",
+                    elementType: "geometry.stroke",
+                    stylers: [{ color: "#212a37" }],
+                },
+                {
+                    featureType: "road",
+                    elementType: "labels.text.fill",
+                    stylers: [{ color: "#9ca5b3" }],
+                },
+                {
+                    featureType: "road.highway",
+                    elementType: "geometry",
+                    stylers: [{ color: "#746855" }],
+                },
+                {
+                    featureType: "road.highway",
+                    elementType: "geometry.stroke",
+                    stylers: [{ color: "#1f2835" }],
+                },
+                {
+                    featureType: "road.highway",
+                    elementType: "labels.text.fill",
+                    stylers: [{ color: "#f3d19c" }],
+                },
+                {
+                    featureType: "transit",
+                    elementType: "geometry",
+                    stylers: [{ color: "#2f3948" }],
+                },
+                {
+                    featureType: "transit.station",
+                    elementType: "labels.text.fill",
+                    stylers: [{ color: "#d59563" }],
+                },
+                {
+                    featureType: "water",
+                    elementType: "geometry",
+                    stylers: [{ color: "#17263c" }],
+                },
+                {
+                    featureType: "water",
+                    elementType: "labels.text.fill",
+                    stylers: [{ color: "#515c6d" }],
+                },
+                {
+                    featureType: "water",
+                    elementType: "labels.text.stroke",
+                    stylers: [{ color: "#17263c" }],
+                },
+            ];
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: chennai,
+                zoom: 12,
+                mapTypeControl: false,
+                streetViewControl: false,
+                styles: mapStyle,
+            });
+
+            const input = document.getElementById('address-input');
+            autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo('bounds', map);
+        }
+
+        function initMarketAnalysis() {
+            initGoogleMaps();
+            document.getElementById('analyze-btn').addEventListener('click', runMarketAnalysis);
+        }
+
+        async function runMarketAnalysis() {
+            // Existing logic for market analysis...
+            const place = autocomplete.getPlace();
+            if (!place || !place.geometry) {
+                // Replace with a custom modal
+                alert("Please select a valid address from the suggestions.");
+                return;
+            }
+
+            const location = {
+                address: place.formatted_address,
+                latitude: place.geometry.location.lat(),
+                longitude: place.geometry.location.lng()
+            };
+            appState.selectedLocation = location;
+            saveState();
+
+            setLoading('analyze-btn', 'analyze-btn-text', 'analyze-btn-spinner', true, 'Analyze Location');
+            const resultsContainer = document.getElementById('analysis-results');
+            resultsContainer.innerHTML = `<div class="flex items-center text-slate-400"><div class="spinner mr-2"></div>Analyzing local market...</div>`;
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/v1/geo/analyze-location`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(location)
+                });
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || "Failed to analyze location.");
+                }
+                const result = await response.json();
+                appState.marketReport = result;
+                saveState();
+                displayMarketReport(result);
+
+            } catch (error) {
+                resultsContainer.innerHTML = `<p class="text-red-400"><strong>Error:</strong> ${error.message}</p>`;
+            } finally {
+                setLoading('analyze-btn', 'analyze-btn-text', 'analyze-btn-spinner', false, 'Analyze Location');
+            }
+        }
+
+        function displayMarketReport(report) {
+            const resultsContainer = document.getElementById('analysis-results');
+            const verdictColor = report.verdict === 'PASS' ? 'text-green-400 bg-green-900/50' : 'text-red-400 bg-red-900/50';
+            const verdictBorder = report.verdict === 'PASS' ? 'border-green-500/50' : 'border-red-500/50';
+
+            let hotspotsHTML = report.demand_hotspots.map(h => `
+                <li class="flex items-start py-3">
+                    <div class="p-2 bg-indigo-600/20 rounded-lg mr-4">
+                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-200">${h.poi_name}</p>
+                        <p class="text-sm text-slate-400">Reach Score: <span class="font-bold text-slate-200">${Math.round(h.reach_score)}</span> | Est. Headcount: ${h.headcount}</p>
+                    </div>
+                </li>
+            `).join('');
+
+            resultsContainer.innerHTML = `
+                <div class="border ${verdictBorder} rounded-lg p-4 mt-4 glass-card">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-white">Analysis Complete</h3>
+                        <span class="px-3 py-1 text-sm font-bold rounded-full ${verdictColor}">${report.verdict}</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mt-2">Final Market Score: <span class="font-bold text-2xl text-indigo-400">${Math.round(report.final_score)}</span></p>
+                    <div class="mt-4">
+                        <h4 class="font-semibold text-slate-300">Demand Hotspots Found:</h4>
+                        <ul id="hotspots-list" class="divide-y divide-slate-700/50">${hotspotsHTML}</ul>
+                    </div>
+                    <div class="mt-6">
+                        <button id="generate-icp-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded">Generate ICP & Cohorts</button>
+                        <span id="market-next-status" class="text-slate-400 text-sm ml-2"></span>
+                    </div>
+                </div>
+            `;
+            const btn = document.getElementById('generate-icp-btn');
+            const nextBtn = document.getElementById('market-next-btn');
+            btn.addEventListener('click', generateICPs);
+            nextBtn.disabled = !appState.icpReport;
+            nextBtn.onclick = () => navigateToView('icp-builder');
+
+            // Map markers: origin + hotspots
+            if (window.google && window.google.maps && map) {
+                // Clear existing
+                if (originMarker) { originMarker.setMap(null); originMarker = null; }
+                mapMarkers.forEach(m => m.setMap(null));
+                mapMarkers = [];
+
+                if (appState.selectedLocation) {
+                    const pos = { lat: appState.selectedLocation.latitude, lng: appState.selectedLocation.longitude };
+                    originMarker = new google.maps.Marker({ position: pos, map, title: 'Origin', icon: { path: google.maps.SymbolPath.CIRCLE, scale: 6, fillColor: '#22c55e', fillOpacity: 1, strokeColor: '#14532d', strokeWeight: 1 } });
+                    map.setCenter(pos);
+                    map.setZoom(13);
+                }
+                (report.demand_hotspots || []).forEach((h, idx) => {
+                    if (typeof h.latitude === 'number' && typeof h.longitude === 'number') {
+                        const marker = new google.maps.Marker({ position: { lat: h.latitude, lng: h.longitude }, map, title: h.poi_name });
+                        mapMarkers.push(marker);
+                    }
+                });
+                // Make list clickable
+                const list = document.getElementById('hotspots-list');
+                if (list) {
+                    Array.from(list.querySelectorAll('li')).forEach((li, idx) => {
+                        const h = report.demand_hotspots[idx];
+                        if (!h || typeof h.latitude !== 'number') return;
+                        li.style.cursor = 'pointer';
+                        li.addEventListener('click', () => {
+                            map.panTo({ lat: h.latitude, lng: h.longitude });
+                            map.setZoom(15);
+                        });
+                    });
+                }
+            }
+        }
+
+        async function generateICPs() {
+            const status = document.getElementById('market-next-status');
+            try {
+                status.textContent = 'Generating ICPs & cohorts…';
+                const resp = await fetch(`${BACKEND_URL}/api/v1/icp/build`, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(appState.marketReport)
+                });
+                const data = await resp.json();
+                if (!resp.ok) throw new Error(data.detail || 'Failed to build ICPs');
+                appState.icpReport = data;
+                saveState();
+                status.textContent = 'Done. Opening ICP view…';
+                navigateToView('icp-builder');
+                updateProgressUI();
+                if ((localStorage.getItem('AUTO_ADVANCE')||'')==='1') navigateToView('icp-builder');
+            } catch (e) {
+                status.textContent = `Error: ${e.message}`;
+            }
+        }
+
+        function initICPBuilder() {
+            const container = document.getElementById('icp-results-container');
+            const enrichBtn = document.getElementById('enrich-cohorts-btn');
+            const nextBtn = document.getElementById('icp-next-btn');
+            const status = document.getElementById('icp-status');
+            if (!appState.icpReport) {
+                if (appState.marketReport) {
+                    status.textContent = 'No ICP yet. Generating…';
+                    generateICPs();
+                } else {
+                    container.innerHTML = '<div class="text-slate-400">Run Market Analysis first.</div>';
+                    enrichBtn.disabled = true;
+                }
+                return;
+            }
+            // Render ICP cards
+            const cards = appState.icpReport.icp_cards || [];
+            if (cards.length === 0) {
+                container.innerHTML = '<div class="text-slate-400">No ICPs generated.</div>';
+                enrichBtn.disabled = true;
+                return;
+            }
+            container.innerHTML = cards.map(c => `
+                <div class="glass-card p-4 rounded-lg border border-slate-700/50">
+                    <h4 class="text-lg font-bold text-white">${c.label}</h4>
+                    <p class="text-slate-300 text-sm">Size: ${c.size_estimate}</p>
+                    <p class="text-slate-300 text-sm">Pain: ${c.primary_pain_point}</p>
+                    <p class="text-slate-300 text-sm">Window: ${c.opportunity_window}</p>
+                    <p class="text-slate-300 text-sm">Channels: ${c.primary_channels.join(', ')}</p>
+                    <p class="text-slate-400 text-xs mt-1">Proof: ${c.proof_hook}</p>
+                </div>
+            `).join('');
+            enrichBtn.disabled = false;
+            nextBtn.disabled = !appState.cohortStrategyReport;
+            nextBtn.onclick = () => navigateToView('cohort-strategy');
+            enrichBtn.onclick = enrichCohorts;
+        }
+
+        async function enrichCohorts() {
+            const status = document.getElementById('icp-status');
+            try {
+                status.textContent = 'Enriching cohorts…';
+                const resp = await fetch(`${BACKEND_URL}/api/v1/cohorts/strategize`, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(appState.icpReport)
+                });
+                const data = await resp.json();
+                if (!resp.ok) throw new Error(data.detail || 'Failed to enrich cohorts');
+                appState.cohortStrategyReport = data;
+                saveState();
+                status.textContent = 'Done. Opening Cohort Strategy…';
+                navigateToView('cohort-strategy');
+                updateProgressUI();
+            } catch (e) {
+                status.textContent = `Error: ${e.message}`;
+            }
+        }
+
+        function initCohortStrategy() {
+            const container = document.getElementById('cohort-strategy-container');
+            const goBtn = document.getElementById('go-outcome-btn');
+            const nextBtn = document.getElementById('cohort-next-btn');
+            const status = document.getElementById('cohort-status');
+            if (!appState.cohortStrategyReport) {
+                container.innerHTML = '<div class="text-slate-400">Generate ICPs, then Enrich Cohorts.</div>';
+                goBtn.disabled = true;
+                return;
+            }
+            const enriched = appState.cohortStrategyReport.enriched_cohorts || [];
+            if (enriched.length === 0) {
+                container.innerHTML = '<div class="text-slate-400">No enriched cohorts.</div>';
+                goBtn.disabled = true;
+                return;
+            }
+            container.innerHTML = enriched.map((ec, idx) => `
+                <label class="block glass-card p-4 rounded-lg border border-slate-700/50">
+                    <input type="radio" name="selected-cohort" value="${idx}" class="mr-2" ${idx===0?'checked':''} />
+                    <span class="text-white font-semibold">${ec.cohort_details.name}</span>
+                    <span class="text-slate-400 text-sm"> — ${ec.icp_card.label}</span>
+                </label>
+            `).join('');
+            goBtn.disabled = false;
+            nextBtn.disabled = !appState.selectedCohort;
+            nextBtn.onclick = () => navigateToView('outcome-charter');
+            goBtn.onclick = () => {
+                const selectedIdx = Number((document.querySelector('input[name="selected-cohort"]:checked')||{value:0}).value);
+                appState.selectedCohort = enriched[selectedIdx];
+                saveState();
+                navigateToView('outcome-charter');
+            };
+        }
+
+        function initOutcomeCharter() {
+            const btn = document.getElementById('draft-charter-btn');
+            const nextBtn = document.getElementById('charter-next-btn');
+            const status = document.getElementById('charter-status');
+            const container = document.getElementById('charter-container');
+            if (!appState.selectedCohort) {
+                container.innerHTML = '<div class="text-slate-400">Select a cohort first.</div>';
+                btn.disabled = true;
+                return;
+            }
+            btn.disabled = false;
+            btn.onclick = async () => {
+                const goal = (document.getElementById('goal-input').value||'').trim();
+                if (!goal) { alert('Enter a goal.'); return; }
+                status.textContent = 'Drafting charter…';
+                try {
+                    const resp = await fetch(`${BACKEND_URL}/api/v1/outcomes/draft-charter`, {
+                        method: 'POST', headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ high_level_goal: goal, target_cohort: appState.selectedCohort })
+                    });
+                    const data = await resp.json();
+                    if (!resp.ok) throw new Error(data.detail || 'Failed to draft charter');
+                    appState.outcomeCharter = data;
+                    saveState();
+                    status.textContent = 'Draft ready.';
+                    container.innerHTML = `
+                        <div class="glass-card p-4 rounded-lg border border-slate-700/50">
+                            <p class="text-slate-200"><strong>Objective:</strong> ${data.objective}</p>
+                            <p class="text-slate-300 text-sm">OMTM: ${data.metric_name} (${data.metric_unit})</p>
+                            <p class="text-slate-300 text-sm">Baseline: ${data.baseline} → Target: ${data.target}</p>
+                            <p class="text-slate-300 text-sm">Window: ${data.time_window_days} days | Stage: ${data.funnel_stage}</p>
+                        </div>`;
+                    nextBtn.disabled = false;
+                    nextBtn.onclick = () => navigateToView('move-plan');
+                    if ((localStorage.getItem('AUTO_ADVANCE')||'')==='1') navigateToView('move-plan');
+                } catch (e) {
+                    status.textContent = `Error: ${e.message}`;
+                }
+            };
+            // Enable Next if charter already exists
+            nextBtn.disabled = !appState.outcomeCharter;
+            if (!nextBtn.disabled) nextBtn.onclick = () => navigateToView('move-plan');
+        }
+
+        function initMovePlan() {
+            const btn = document.getElementById('generate-plan-btn');
+            const nextBtn = document.getElementById('plan-next-btn');
+            const status = document.getElementById('plan-status');
+            const container = document.getElementById('plan-container');
+            btn.onclick = async () => {
+                if (!appState.outcomeCharter || !appState.selectedCohort) { alert('Need charter and cohort'); return; }
+                status.textContent = 'Generating move plan…';
+                try {
+                    const resp = await fetch(`${BACKEND_URL}/api/v1/moves/generate-plan`, {
+                        method: 'POST', headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ outcome_charter: appState.outcomeCharter, target_cohort: appState.selectedCohort })
+                    });
+                    const data = await resp.json();
+                    if (!resp.ok) throw new Error(data.detail || 'Failed to generate plan');
+                    appState.strikePlan = data;
+                    saveState();
+                    status.textContent = 'Plan ready.';
+                    container.innerHTML = renderStrikePlan(data);
+                    nextBtn.disabled = false;
+                    nextBtn.onclick = () => navigateToView('creative-assets');
+                    if ((localStorage.getItem('AUTO_ADVANCE')||'')==='1') navigateToView('creative-assets');
+                    updateProgressUI();
+                } catch (e) {
+                    status.textContent = `Error: ${e.message}`;
+                }
+            };
+            nextBtn.disabled = !appState.strikePlan;
+            if (!nextBtn.disabled) nextBtn.onclick = () => navigateToView('creative-assets');
+        }
+
+        function renderStrikePlan(plan) {
+            const exps = (plan.experiments||[]).map(e => `<li class="text-slate-300"><strong>${e.name}</strong> — ${e.hypothesis} <em>(${e.channels.join(', ')})</em></li>`).join('');
+            const briefs = (plan.asset_briefs||[]).map(b => `<li class="text-slate-300">[${b.channel}] ${b.id} — ${b.key_message} → ${b.call_to_action}</li>`).join('');
+            const sched = (plan.schedule||[]).map(s => `<li class="text-slate-300">${s.date} ${s.time} — ${s.channel}: ${s.action_details}</li>`).join('');
+            return `
+                <div class="glass-card p-4 rounded-lg border border-slate-700/50">
+                    <p class="text-slate-200"><strong>Plan:</strong> ${plan.id}</p>
+                    <div class="mt-3"><h4 class="text-slate-100 font-semibold">Experiments</h4><ul class="list-disc ml-5">${exps}</ul></div>
+                    <div class="mt-3"><h4 class="text-slate-100 font-semibold">Asset Briefs</h4><ul class="list-disc ml-5">${briefs}</ul></div>
+                    <div class="mt-3"><h4 class="text-slate-100 font-semibold">Schedule</h4><ul class="list-disc ml-5">${sched}</ul></div>
+                </div>`;
+        }
+
+        function initCreativeAssets() {
+            const btn = document.getElementById('generate-assets-btn');
+            const nextBtn = document.getElementById('assets-next-btn');
+            const status = document.getElementById('assets-status');
+            const container = document.getElementById('assets-container');
+            btn.onclick = async () => {
+                if (!appState.strikePlan || !appState.outcomeCharter) { alert('Need plan and charter'); return; }
+                status.textContent = 'Generating assets…';
+                try {
+                    const resp = await fetch(`${BACKEND_URL}/api/v1/creatives/generate-assets`, {
+                        method: 'POST', headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ strike_plan: appState.strikePlan, outcome_charter: appState.outcomeCharter })
+                    });
+                    const data = await resp.json();
+                    if (!resp.ok) throw new Error(data.detail || 'Failed to generate assets');
+                    appState.assetPackage = data;
+                    saveState();
+                    status.textContent = 'Assets ready.';
+                    container.innerHTML = (data.assets||[]).map((a, idx) => `
+                        <div class="glass-card p-4 rounded-lg border border-slate-700/50">
+                            <p class="text-slate-200"><strong>${a.channel}</strong> — ${a.headline||''}</p>
+                            <p class="text-slate-300 text-sm">${a.body_copy}</p>
+                            <p class="text-slate-400 text-xs">Visual: ${a.visual_suggestion}</p>
+                            <button data-asset-index="${idx}" class="mt-2 bg-slate-700 hover:bg-slate-600 text-white text-xs px-2 py-1 rounded copy-asset-btn">Copy</button>
+                        </div>`).join('');
+                    container.querySelectorAll('.copy-asset-btn').forEach(b => {
+                        b.addEventListener('click', (e) => {
+                            const i = Number(e.currentTarget.getAttribute('data-asset-index'));
+                            const a = appState.assetPackage.assets[i];
+                            const text = `${a.headline||''}\n\n${a.body_copy}\n\nVisual: ${a.visual_suggestion}`.trim();
+                            navigator.clipboard.writeText(text);
+                            status.textContent = 'Copied to clipboard';
+                            setTimeout(()=> status.textContent='', 1500);
+                        });
+                    });
+                    nextBtn.disabled = false;
+                    nextBtn.onclick = () => navigateToView('launch-pad');
+                    if ((localStorage.getItem('AUTO_ADVANCE')||'')==='1') navigateToView('launch-pad');
+                    updateProgressUI();
+                } catch (e) {
+                    status.textContent = `Error: ${e.message}`;
+                }
+            };
+            nextBtn.disabled = !appState.assetPackage;
+            if (!nextBtn.disabled) nextBtn.onclick = () => navigateToView('launch-pad');
+        }
+
+        function initLaunchPad() {
+            const buildBtn = document.getElementById('build-schedule-btn');
+            const simBtn = document.getElementById('simulate-launch-btn');
+            const nextBtn = document.getElementById('launch-next-btn');
+            const status = document.getElementById('launch-status');
+            const schedContainer = document.getElementById('schedule-container');
+            const reportContainer = document.getElementById('launch-report-container');
+            // Add export buttons if missing
+            let exportWrap = document.getElementById('export-buttons');
+            if (!exportWrap) {
+                exportWrap = document.createElement('div');
+                exportWrap.id = 'export-buttons';
+                exportWrap.className = 'mb-4 flex gap-3';
+                exportWrap.innerHTML = `
+                    <button id="export-csv-btn" class="bg-slate-700 hover:bg-slate-600 text-white text-sm px-3 py-1 rounded disabled:opacity-40" disabled>Export Schedule CSV</button>
+                    <button id="export-ics-btn" class="bg-slate-700 hover:bg-slate-600 text-white text-sm px-3 py-1 rounded disabled:opacity-40" disabled>Export Schedule ICS</button>
+                `;
+                schedContainer.parentElement.insertBefore(exportWrap, schedContainer);
+            }
+            const exportCsvBtn = document.getElementById('export-csv-btn');
+            const exportIcsBtn = document.getElementById('export-ics-btn');
+            buildBtn.onclick = async () => {
+                if (!appState.strikePlan || !appState.assetPackage) { alert('Need plan and assets'); return; }
+                status.textContent = 'Building schedule…';
+                try {
+                    const resp = await fetch(`${BACKEND_URL}/api/v1/scheduler/build-schedule`, {
+                        method: 'POST', headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ strike_plan: appState.strikePlan, asset_package: appState.assetPackage })
+                    });
+                    const data = await resp.json();
+                    if (!resp.ok) throw new Error(data.detail || 'Failed to build schedule');
+                    appState.schedulePackage = data;
+                    saveState();
+                    status.textContent = 'Schedule ready.';
+                    schedContainer.innerHTML = (data.jobs||[]).map(j => `<div class="text-slate-300">${j.publish_at_iso} — [${j.channel}] ${j.asset_headline||j.asset_id}</div>`).join('');
+                    updateProgressUI();
+                    exportCsvBtn.disabled = false;
+                    exportIcsBtn.disabled = false;
+                } catch (e) { status.textContent = `Error: ${e.message}`; }
+            };
+            simBtn.onclick = async () => {
+                if (!appState.schedulePackage || !appState.assetPackage) { alert('Need schedule and assets'); return; }
+                status.textContent = 'Simulating launch…';
+                try {
+                    const resp = await fetch(`${BACKEND_URL}/api/v1/launch/simulate`, {
+                        method: 'POST', headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ schedule_package: appState.schedulePackage, asset_package: appState.assetPackage })
+                    });
+                    const data = await resp.json();
+                    if (!resp.ok) throw new Error(data.detail || 'Failed to simulate launch');
+                    appState.simulationReport = data;
+                    saveState();
+                    status.textContent = 'Simulation complete.';
+                    reportContainer.innerHTML = `
+                        <div class="glass-card p-4 rounded-lg border border-slate-700/50">
+                            <p class="text-slate-200">Targeted: ${data.total_contacts_targeted} | Messages: ${data.messages_sent}</p>
+                            <p class="text-slate-300">Engagement Rate: ${data.simulated_engagement_rate}%</p>
+                        </div>`;
+                    nextBtn.disabled = false;
+                    nextBtn.onclick = () => navigateToView('attribution');
+                    if ((localStorage.getItem('AUTO_ADVANCE')||'')==='1') navigateToView('attribution');
+                    updateProgressUI();
+                } catch (e) { status.textContent = `Error: ${e.message}`; }
+            };
+            nextBtn.disabled = !appState.simulationReport;
+            if (!nextBtn.disabled) nextBtn.onclick = () => navigateToView('attribution');
+
+            // Wire export actions
+            if (appState.schedulePackage) {
+                exportCsvBtn.disabled = false;
+                exportIcsBtn.disabled = false;
+            }
+            exportCsvBtn.onclick = () => {
+                if (!appState.schedulePackage) return;
+                const rows = [['publish_at_iso','channel','asset_headline','asset_id']]
+                    .concat((appState.schedulePackage.jobs||[]).map(j => [j.publish_at_iso, j.channel, j.asset_headline||'', j.asset_id]));
+                const csv = rows.map(r => r.map(x => '"'+String(x).replaceAll('"','""')+'"').join(',')).join('\n');
+                const blob = new Blob([csv], {type:'text/csv'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = 'schedule.csv'; a.click(); URL.revokeObjectURL(url);
+            };
+            exportIcsBtn.onclick = () => {
+                if (!appState.schedulePackage) return;
+                function toICSDate(iso) { const d = new Date(iso); return d.toISOString().replaceAll('-','').replaceAll(':','').replace('.000','').replace('Z','Z'); }
+                const lines = [
+                    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Geo-Strategist//EN'
+                ];
+                for (const j of (appState.schedulePackage.jobs||[])) {
+                    const uid = j.job_id || (Math.random().toString(36).slice(2));
+                    const dtstamp = toICSDate(new Date().toISOString());
+                    const dtstart = toICSDate(j.publish_at_iso);
+                    const summary = `[${j.channel}] ${j.asset_headline||j.asset_id}`;
+                    lines.push('BEGIN:VEVENT', `UID:${uid}`, `DTSTAMP:${dtstamp}`, `DTSTART:${dtstart}`, `SUMMARY:${summary}`, 'END:VEVENT');
+                }
+                lines.push('END:VCALENDAR');
+                const blob = new Blob([lines.join('\r\n')], {type:'text/calendar'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = 'schedule.ics'; a.click(); URL.revokeObjectURL(url);
+            };
+        }
+
+        // --- PREFLIGHT ---
+        function initPreflight() {
+            const btn = document.getElementById('run-preflight-btn');
+            const out = document.getElementById('preflight-results');
+            btn.onclick = runPreflight;
+            if (!appState.preflight) runPreflight();
+        }
+
+        async function runPreflight() {
+            const out = document.getElementById('preflight-results');
+            out.innerHTML = '<div class="text-slate-400">Running checks…</div>';
+            try {
+                const resp = await fetch(`${BACKEND_URL}/api/v1/config/health/details`);
+                const data = await resp.json();
+                appState.preflight = data; saveState();
+                const ok = {
+                    backend: !!(data.backend && data.backend.ok),
+                    maps: !!(data.maps && data.maps.server_key_present),
+                    ollama: !!(data.ollama && data.ollama.reachable),
+                    chroma: !!(data.chroma && data.chroma.reachable)
+                };
+                const modelInfo = data.ollama || {};
+                function row(label, pass, extra='') { return `<div class="flex items-center gap-2"><span class="${pass?'text-green-400':'text-red-400'}">${pass?'✔':'✖'}</span><span>${label}</span><span class="text-slate-400 text-xs">${extra}</span></div>`; }
+                out.innerHTML = [
+                    row('Backend available', ok.backend, data.backend?.url || ''),
+                    row('Google Maps server key present', ok.maps, ''),
+                    row('Ollama reachable', ok.ollama, modelInfo.base_url || ''),
+                    row(`Ollama fast model (${modelInfo.fast_model_available?'ok':'missing'})`, !!modelInfo.fast_model_available, ''),
+                    row(`Ollama reasoning model (${modelInfo.reasoning_model_available?'ok':'missing'})`, !!modelInfo.reasoning_model_available, ''),
+                    row(`Ollama embeddings model (${modelInfo.embeddings_model_available?'ok':'missing'})`, !!modelInfo.embeddings_model_available, ''),
+                    row(`Chroma at ${data.chroma?.host}:${data.chroma?.port}`, ok.chroma, '')
+                ].join('');
+
+                updateProgressUI();
+                if (ok.backend && ok.maps && ok.ollama && ok.chroma && (localStorage.getItem('AUTO_ADVANCE')==='1')) {
+                    navigateToView('market-analysis');
+                }
+            } catch (e) {
+                out.innerHTML = `<div class="text-red-400">Failed to run checks: ${e.message}</div>`;
+            }
+        }
+
+        // --- PROGRESS ---
+        function updateProgressUI() {
+            const steps = ['preflight','market','icp','cohorts','outcome','plan','assets','launch','attrib'];
+            let idx = 0;
+            if (appState.marketReport) idx = 1;
+            if (appState.icpReport) idx = 2;
+            if (appState.cohortStrategyReport) idx = 3;
+            if (appState.outcomeCharter) idx = 4;
+            if (appState.strikePlan) idx = 5;
+            if (appState.assetPackage) idx = 6;
+            if (appState.schedulePackage) idx = 7;
+            if (appState.simulationReport) idx = 8;
+            const percent = Math.round((idx) / (steps.length-1) * 100);
+            const fill = document.getElementById('progress-fill');
+            if (fill) fill.style.width = `${percent}%`;
+            steps.forEach((s, i) => {
+                const el = document.querySelector(`#breadcrumb [data-step="${s}"]`);
+                if (!el) return;
+                el.classList.remove('text-slate-500','text-white','text-green-400','font-bold');
+                if (i < idx) el.classList.add('text-green-400');
+                else if (i === idx) el.classList.add('text-white','font-bold');
+                else el.classList.add('text-slate-500');
+            });
+        }
+                    updateProgressUI();
+
+    </script>
+</body>
+</html>

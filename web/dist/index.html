@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geo-Strategist</title>
+    <style>
+      html, body, #root { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; background: #0b1021; color: #e7eaf6; }
+      /* Legacy chat styles kept in case you navigate to old UI */
+      .app { display: grid; grid-template-columns: 240px 1fr; height: 100%; }
+      .sidebar { border-right: 1px solid #1b2144; padding: 16px; }
+      .main { display: grid; grid-template-rows: auto 1fr; }
+      .toolbar { border-bottom: 1px solid #1b2144; padding: 12px; display: flex; gap: 8px; }
+      .chat { display: grid; grid-template-rows: 1fr auto; height: 100%; }
+      .msgs { padding: 12px; overflow: auto; }
+      .input { border-top: 1px solid #1b2144; padding: 12px; display: flex; gap: 8px; }
+      button { padding: 8px 12px; border: 1px solid #2a3265; background: #12183a; color: #e7eaf6; border-radius: 8px; cursor: pointer; }
+      button:hover { filter: brightness(1.1); }
+      input, textarea { width: 100%; padding: 10px 12px; border: 1px solid #2a3265; border-radius: 8px; background: #0f1533; color: #e7eaf6; }
+      .pill { display:inline-block; padding: 4px 8px; background: #1b2144; margin-right: 6px; border-radius: 999px; font-size: 12px; }
+      .attach { background:#0f1638; border:1px solid #273172; padding:8px; margin:6px 0; border-radius:8px; }
+
+      /* Magic intake styles */
+      .magic-root { height: 100%; display: grid; }
+      .hero { display:flex; align-items:center; justify-content:center; height:100%; position:relative; overflow:hidden; }
+      .magic-card { background: radial-gradient(1200px 500px at 20% 0%, rgba(78,106,255,.18), transparent), #0f1533; border:1px solid #2a3265; border-radius: 16px; padding: 36px 28px; box-shadow: 0 10px 40px rgba(15, 21, 51, .55), inset 0 0 64px rgba(59,92,255,.08); text-align:center; width: min(560px, 92vw); transform: translateZ(0); }
+      .magic-card h1 { margin: 0 0 10px; font-weight: 700; letter-spacing: .3px; }
+      .magic-card p { margin: 0 0 18px; color: #b9c0ff; }
+      .magic-card .primary { font-weight:600; background: linear-gradient(135deg, #5b6cff, #8f5bff); border-color: transparent; }
+      .magic-card.fading { animation: fadeout .55s ease forwards; }
+      .whoosh::after { content:""; position:absolute; inset:-20%; background: radial-gradient(800px 120px at 50% -10%, rgba(255,255,255,.08), transparent), linear-gradient(90deg, rgba(141,92,255,.15), rgba(92,146,255,.15)); filter: blur(24px); animation: whoosh 600ms ease forwards; pointer-events:none; }
+      @keyframes whoosh { 0% { opacity: 1; transform: translateY(0);} 100% { opacity: 0; transform: translateY(-40px);} }
+      @keyframes fadeout { 0% { opacity:1; transform: scale(1);} 100% { opacity:0; transform: scale(.96);} }
+
+      .terminal { height:100%; display:grid; grid-template-rows: 1fr auto auto; }
+      .screen { padding: 20px; overflow:auto; }
+      .row { display:flex; margin: 10px 0; }
+      .row.assistant { justify-content: flex-start; }
+      .row.user { justify-content: flex-end; }
+      .bubble { max-width: 74ch; padding: 12px 14px; border-radius: 12px; border: 1px solid #273172; background: #0f1638; box-shadow: 0 2px 16px rgba(0,0,0,.16); white-space: pre-wrap; line-height: 1.4; }
+      .row.user .bubble { background: #141c44; border-color: #2c3a8f; }
+      .inputbar { border-top: 1px solid #1b2144; padding: 12px; display:flex; gap: 10px; background: #0b1021; position: sticky; bottom: 0; }
+      .inputbar .ghost { background: transparent; border-color: #2a3265; color: #9fb0ff; }
+      .cursor { display:inline-block; width: 0.6ch; margin-left: 2px; color:#9fb0ff; animation: blink 1s steps(1) infinite; }
+      @keyframes blink { 50% { opacity: 0; } }
+
+      .bubble.thinking { display:grid; grid-template-columns: 24px 1fr; align-items:center; gap: 10px; }
+      .dots { width: 16px; height: 16px; border-radius: 50%; background: #5b6cff; filter: blur(.3px); animation: pulse 1.2s ease-in-out infinite; }
+      @keyframes pulse { 0%, 100% { transform: scale(.8); opacity: .7 } 50% { transform: scale(1.1); opacity: 1 } }
+      .thought { color: #aeb8ff; font-size: 12px; }
+
+      .summary { border-top: 1px solid #1b2144; padding: 12px 20px 20px; background: #0b1021; }
+      .summary .title { color: #a3adff; font-weight: 600; margin-bottom: 8px; }
+      .summary pre { margin: 0; white-space: pre-wrap; background: #0f1638; border:1px solid #273172; border-radius: 8px; padding: 12px; }
+    </style>
+    <script type="module" crossorigin src="/assets/index-k3mDCSbk.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  </html>

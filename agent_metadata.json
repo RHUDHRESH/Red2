@@ -1,0 +1,923 @@
+{
+  "__init__.py": {
+    "schemas": [],
+    "services": [],
+    "run_funcs": []
+  },
+  "ad_copy_agent.py": {
+    "schemas": [
+      "AdCopyRequest",
+      "AdCopyResponse",
+      "AdVariant"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_ad_copy"
+    ]
+  },
+  "agent_hub.py": {
+    "schemas": [
+      "AISASRequest",
+      "ActionRequest",
+      "CashGuardRequest",
+      "CashRequest",
+      "CompetitorScanRequest",
+      "LateralVerticalRequest",
+      "LocationRequest",
+      "MarketNeedReport",
+      "OfferRequest",
+      "PermissionRequest",
+      "PositioningGenerationRequest",
+      "ReframeRequest",
+      "SegmentRequest",
+      "TaskEvent",
+      "WorkflowRequest",
+      "WorkflowResult",
+      "WoundRequest"
+    ],
+    "services": [],
+    "run_funcs": [
+      "run_workflow"
+    ]
+  },
+  "archive_agent.py": {
+    "schemas": [
+      "AttributionReport",
+      "NextMoveRecommendation",
+      "OutcomeCharter",
+      "PlaybookTemplate",
+      "StrikePlan"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_archive_agent",
+      "run_recommendation_agent"
+    ]
+  },
+  "asset_supervisor_agent.py": {
+    "schemas": [
+      "AdCopyResponse",
+      "CarouselResponse",
+      "ImagePromptResponse",
+      "MemeResponse",
+      "ShortVideoResponse",
+      "SupervisorRequest",
+      "SupervisorResponse",
+      "ThreadResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_asset_supervisor"
+    ]
+  },
+  "attribution_agent.py": {
+    "schemas": [
+      "AttributionEvent",
+      "AttributionReport",
+      "CampaignSimulationReport",
+      "ProofArtifact"
+    ],
+    "services": [],
+    "run_funcs": [
+      "run_attribution_agent"
+    ]
+  },
+  "blog_outline_agent.py": {
+    "schemas": [
+      "BlogOutlineRequest",
+      "BlogOutlineResponse",
+      "BlogSection"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_blog_outline"
+    ]
+  },
+  "canva_agent.py": {
+    "schemas": [
+      "CanvaDesignRequest",
+      "CanvaDesignResponse"
+    ],
+    "services": [
+      "CanvaService",
+      "canva_service",
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_canva_design"
+    ]
+  },
+  "caption_agent.py": {
+    "schemas": [
+      "CaptionRequest",
+      "CaptionResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_caption"
+    ]
+  },
+  "carousel_agent.py": {
+    "schemas": [
+      "CarouselRequest",
+      "CarouselResponse",
+      "CarouselSlide"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_carousel"
+    ]
+  },
+  "case_study_outline_agent.py": {
+    "schemas": [
+      "CaseStudyOutlineRequest",
+      "CaseStudyOutlineResponse",
+      "CaseStudySection"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_case_study_outline"
+    ]
+  },
+  "chat_orchestrator.py": {
+    "schemas": [
+      "ActionLog",
+      "Attachment",
+      "ChatTurnRequest",
+      "ChatTurnResponse"
+    ],
+    "services": [
+      "build_ics_event",
+      "calendar_service",
+      "get_services",
+      "make_simple_pdf_base64",
+      "pdf_writer_service",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_chat_orchestrator"
+    ]
+  },
+  "cohort_agent.py": {
+    "schemas": [
+      "Cohort",
+      "CohortStrategy",
+      "CohortStrategyReport",
+      "EnrichedCohort",
+      "ICPCard",
+      "ICPReport"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_cohort_strategist_agent"
+    ]
+  },
+  "competitor_intel_agent.py": {
+    "schemas": [
+      "CompetitorCard",
+      "CompetitorScanRequest",
+      "CompetitorScanResponse",
+      "CompetitorSignal"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_competitor_scan"
+    ]
+  },
+  "creative_agent.py": {
+    "schemas": [
+      "AssetBrief",
+      "AssetPackage",
+      "CreativeAsset",
+      "OutcomeCharter",
+      "StrikePlan"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_creative_director_agent"
+    ]
+  },
+  "cta_agent.py": {
+    "schemas": [
+      "CtaRequest",
+      "CtaResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_cta"
+    ]
+  },
+  "deep_research_agent.py": {
+    "schemas": [
+      "ResearchFinding",
+      "ResearchRequest",
+      "ResearchResponse",
+      "SourceNote"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_deep_research"
+    ]
+  },
+  "drip_campaign_agent.py": {
+    "schemas": [
+      "DripCampaignRequest",
+      "DripCampaignResponse",
+      "DripEmail"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_drip_campaign"
+    ]
+  },
+  "dynamic_intake_agent.py": {
+    "schemas": [
+      "DynamicTurnResponse",
+      "IntakeHints",
+      "PermissionLadderRequest",
+      "PersonaLabel",
+      "PersonaProfile"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_dynamic_intake_turn"
+    ]
+  },
+  "email_agent.py": {
+    "schemas": [
+      "EmailRequest",
+      "EmailResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_email"
+    ]
+  },
+  "evidence_linker_agent.py": {
+    "schemas": [
+      "ClaimEvidence",
+      "ClaimItem",
+      "CopyAuditRequest",
+      "CopyAuditResponse",
+      "EvidenceItem",
+      "RewriteOption"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_copy_evidence_audit"
+    ]
+  },
+  "founder_brand_agent.py": {
+    "schemas": [
+      "BrandVoice",
+      "FounderBrandCodex",
+      "FounderBrandInput",
+      "FounderBrandResponse",
+      "MeasurementTier"
+    ],
+    "services": [],
+    "run_funcs": []
+  },
+  "giveaway_agent.py": {
+    "schemas": [
+      "GiveawayRequest",
+      "GiveawayResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_giveaway"
+    ]
+  },
+  "google_forms_agent.py": {
+    "schemas": [
+      "Asset"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": []
+  },
+  "hashtag_agent.py": {
+    "schemas": [
+      "HashtagRequest",
+      "HashtagResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_hashtag"
+    ]
+  },
+  "headline_agent.py": {
+    "schemas": [
+      "HeadlineRequest",
+      "HeadlineResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_headline"
+    ]
+  },
+  "hook_agent.py": {
+    "schemas": [
+      "HookRequest",
+      "HookResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_hook"
+    ]
+  },
+  "icp_builder_agent.py": {
+    "schemas": [
+      "Cohort",
+      "GeoSignal",
+      "ICPCard",
+      "ICPReport",
+      "MarketNeedReport"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_icp_builder_agent"
+    ]
+  },
+  "image_prompt_agent.py": {
+    "schemas": [
+      "ImagePromptRequest",
+      "ImagePromptResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_image_prompt"
+    ]
+  },
+  "intake_agent.py": {
+    "schemas": [
+      "IntakeState"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_intake_agent_turn"
+    ]
+  },
+  "landing_page_agent.py": {
+    "schemas": [
+      "FAQItem",
+      "HeroSection",
+      "LandingPageBlueprint",
+      "LandingPageRequest",
+      "LandingPageResponse",
+      "PageSection"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_landing_page"
+    ]
+  },
+  "launch_agent.py": {
+    "schemas": [
+      "AssetPackage",
+      "Contact",
+      "LaunchReport",
+      "SchedulePackage",
+      "ScheduledJob"
+    ],
+    "services": [],
+    "run_funcs": [
+      "run_launch_agent"
+    ]
+  },
+  "market_analysis_agent.py": {
+    "schemas": [
+      "GeoSignal",
+      "MarketNeedReport"
+    ],
+    "services": [
+      "POI",
+      "get_services",
+      "google_maps_service",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_market_analysis_agent"
+    ]
+  },
+  "meme_agent.py": {
+    "schemas": [
+      "MemeRequest",
+      "MemeResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_meme"
+    ]
+  },
+  "move_maker_agent.py": {
+    "schemas": [
+      "EnrichedCohort",
+      "OutcomeCharter",
+      "StrikePlan"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_move_maker_agent"
+    ]
+  },
+  "neurofoundry_agent.py": {
+    "schemas": [
+      "ADAPT20",
+      "AssetDNA",
+      "BehaviorPlan",
+      "CompileRequest",
+      "CompileResponse",
+      "EarnedEffort",
+      "EmailDraft",
+      "FramePlan",
+      "LandingOutline",
+      "MemeticRails",
+      "Pratfall",
+      "Rubric",
+      "SocialDraft",
+      "StyleMatch"
+    ],
+    "services": [],
+    "run_funcs": []
+  },
+  "newsletter_agent.py": {
+    "schemas": [
+      "NewsletterRequest",
+      "NewsletterResponse",
+      "NewsletterSection"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_newsletter"
+    ]
+  },
+  "objection_agent.py": {
+    "schemas": [
+      "Objection",
+      "PositioningOptionCard"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_objection_agent"
+    ]
+  },
+  "objective_router_agent.py": {
+    "schemas": [
+      "ADAPTPlan",
+      "AlignOut",
+      "ArchitectOut",
+      "DiagnoseOut",
+      "ObjectiveRouterRequest",
+      "ObjectiveRouterResponse",
+      "PilotOut",
+      "RouterClassifications",
+      "TrackOut",
+      "TrackTargets",
+      "WOOP"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_objective_router"
+    ]
+  },
+  "outcome_agent.py": {
+    "schemas": [
+      "EnrichedCohort",
+      "OutcomeCharter"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_outcome_committer_agent"
+    ]
+  },
+  "partner_outreach_agent.py": {
+    "schemas": [
+      "EnrichedPartner",
+      "OutreachTemplate",
+      "PartnerCandidate",
+      "PartnerOutreachCard",
+      "PartnerOutreachRequest",
+      "PartnerOutreachResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_partner_outreach"
+    ]
+  },
+  "permission_ladder_agent.py": {
+    "schemas": [
+      "CommunityEntry",
+      "GrowthLoop",
+      "MicroAsk",
+      "OptInStep",
+      "PermissionLadderBlueprint",
+      "PermissionLadderRequest",
+      "PermissionLadderResponse",
+      "PromptSpec",
+      "ReciprocityOffer"
+    ],
+    "services": [],
+    "run_funcs": []
+  },
+  "persona_angle_agent.py": {
+    "schemas": [
+      "PersonaAngleItem",
+      "PersonaAngleRequest",
+      "PersonaAngleResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_persona_angle"
+    ]
+  },
+  "platform_ops_copilot_agent.py": {
+    "schemas": [
+      "ChecklistItem",
+      "SourceRef",
+      "VibeCheckRequest",
+      "VibeCheckResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_platform_vibe_check"
+    ]
+  },
+  "poll_agent.py": {
+    "schemas": [
+      "PollItem",
+      "PollRequest",
+      "PollResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_poll"
+    ]
+  },
+  "positioning_agent.py": {
+    "schemas": [
+      "PositioningOptionCard"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_positioning_agent"
+    ]
+  },
+  "press_release_agent.py": {
+    "schemas": [
+      "PressReleaseRequest",
+      "PressReleaseResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_press_release"
+    ]
+  },
+  "push_agent.py": {
+    "schemas": [
+      "PushRequest",
+      "PushResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_push"
+    ]
+  },
+  "restaurant_micro_strategy_agent.py": {
+    "schemas": [
+      "ICEScore",
+      "MicroPlay",
+      "MicroPlayRequest",
+      "MicroPlayResponse",
+      "SourceRef"
+    ],
+    "services": [
+      "get_services",
+      "make_simple_pdf_base64",
+      "pdf_writer_service",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_restaurant_micro_strategy"
+    ]
+  },
+  "rok_knife_agent.py": {
+    "schemas": [
+      "BiasLock",
+      "ROKInput",
+      "ROKOutput",
+      "Spine",
+      "StoryPrimitives",
+      "Taglines",
+      "WeirdDir"
+    ],
+    "services": [],
+    "run_funcs": []
+  },
+  "scheduler_agent.py": {
+    "schemas": [
+      "AssetPackage",
+      "CreativeAsset",
+      "SchedulePackage",
+      "ScheduledJob",
+      "StrikePlan"
+    ],
+    "services": [],
+    "run_funcs": [
+      "run_scheduler_agent"
+    ]
+  },
+  "seo_brief_agent.py": {
+    "schemas": [
+      "OutlineSection",
+      "SEOBrief",
+      "SEOBriefRequest",
+      "SEOBriefResponse",
+      "SEOSourceNote"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_seo_brief"
+    ]
+  },
+  "short_video_agent.py": {
+    "schemas": [
+      "ShortVideoRequest",
+      "ShortVideoResponse",
+      "VideoBeat"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_short_video"
+    ]
+  },
+  "sms_agent.py": {
+    "schemas": [
+      "SMSRequest",
+      "SMSResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_sms"
+    ]
+  },
+  "social_calendar_agent.py": {
+    "schemas": [
+      "SocialCalendarRequest",
+      "SocialCalendarResponse",
+      "SocialPostPlan"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_social_calendar"
+    ]
+  },
+  "strategy_engine.py": {
+    "schemas": [
+      "AISASRequest",
+      "AISASResponse",
+      "ActionOut",
+      "ActionRequest",
+      "CashGuardRequest",
+      "CashGuardResponse",
+      "CashOut",
+      "CashRequest",
+      "LateralVerticalRequest",
+      "LateralVerticalResponse",
+      "OfferOut",
+      "OfferRequest",
+      "OutreachMsg",
+      "PermissionRequest",
+      "PermissionResponse",
+      "Play",
+      "ReframeOut",
+      "ReframeRequest",
+      "SegmentOut",
+      "SegmentRequest",
+      "WoundOut",
+      "WoundRequest"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_action",
+      "run_aisas",
+      "run_cash",
+      "run_cashguard",
+      "run_lateral_vertical",
+      "run_offer",
+      "run_permission",
+      "run_reframe",
+      "run_segment",
+      "run_wound"
+    ]
+  },
+  "synthetic_behavior_agent.py": {
+    "schemas": [
+      "CohortDataset",
+      "CohortSpec",
+      "SourceRef",
+      "SyntheticGenRequest",
+      "SyntheticGenResponse",
+      "SyntheticPerson"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_synthetic_generation"
+    ]
+  },
+  "synthetic_pipeline_agent.py": {
+    "schemas": [
+      "GeoSignal",
+      "MarketNeedReport",
+      "SyntheticGenRequest"
+    ],
+    "services": [],
+    "run_funcs": [
+      "run_synthetic_icp_pipeline"
+    ]
+  },
+  "tagline_agent.py": {
+    "schemas": [
+      "TaglineRequest",
+      "TaglineResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_tagline"
+    ]
+  },
+  "testimonial_agent.py": {
+    "schemas": [
+      "TestimonialRequest",
+      "TestimonialResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_testimonial"
+    ]
+  },
+  "thread_agent.py": {
+    "schemas": [
+      "ThreadRequest",
+      "ThreadResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_thread"
+    ]
+  },
+  "whatsapp_agent.py": {
+    "schemas": [
+      "WhatsAppRequest",
+      "WhatsAppResponse"
+    ],
+    "services": [
+      "get_services",
+      "registry"
+    ],
+    "run_funcs": [
+      "run_whatsapp"
+    ]
+  }
+}

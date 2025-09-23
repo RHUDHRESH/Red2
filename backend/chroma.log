@@ -1,0 +1,243 @@
+WARNING:  [10-09-2025 21:25:25] chroma_server_nofile is not supported on Windows. chroma_server_nofile will not be set.
+INFO:     [10-09-2025 21:25:26] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:    [10-09-2025 21:25:26] Starting component System
+DEBUG:    [10-09-2025 21:25:26] Starting component OpenTelemetryClient
+DEBUG:    [10-09-2025 21:25:26] Starting component SimpleAssignmentPolicy
+DEBUG:    [10-09-2025 21:25:26] Starting component SqliteDB
+DEBUG:    [10-09-2025 21:25:26] Starting component QuotaEnforcer
+DEBUG:    [10-09-2025 21:25:26] Starting component Posthog
+DEBUG:    [10-09-2025 21:25:26] Starting component LocalSegmentManager
+DEBUG:    [10-09-2025 21:25:26] Starting component SegmentAPI
+INFO:     [10-09-2025 21:25:26] Started server process [8584]
+INFO:     [10-09-2025 21:25:26] Waiting for application startup.
+INFO:     [10-09-2025 21:25:26] Application startup complete.
+INFO:     [10-09-2025 21:25:26] Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     [10-09-2025 21:25:45] 127.0.0.1:59592 - "GET /api/v1/tenants/default_tenant HTTP/1.1" 200
+INFO:     [10-09-2025 21:25:45] 127.0.0.1:59592 - "GET /api/v1/databases/default_database?tenant=default_tenant HTTP/1.1" 200
+ERROR:    [10-09-2025 21:25:48] no such column: collections.topic
+Traceback (most recent call last):
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\middleware\base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\anyio\streams\memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\server\fastapi\__init__.py", line 82, in catch_exceptions_middleware
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\middleware\base.py", line 159, in call_next
+    raise app_exc
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\middleware\base.py", line 182, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\middleware\base.py", line 184, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\server\fastapi\__init__.py", line 96, in check_http_version_middleware
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\middleware\base.py", line 159, in call_next
+    raise app_exc
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\fastapi\routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\fastapi\routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\starlette\concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\anyio\to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\anyio\_backends\_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\anyio\_backends\_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\telemetry\opentelemetry\__init__.py", line 127, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\auth\fastapi.py", line 241, in wrapped
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\server\fastapi\__init__.py", line 415, in create_collection
+    return self._api.create_collection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\telemetry\opentelemetry\__init__.py", line 127, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\api\segment.py", line 167, in create_collection
+    coll, created = self._sysdb.create_collection(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\telemetry\opentelemetry\__init__.py", line 127, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\db\mixins\sysdb.py", line 209, in create_collection
+    existing = self.get_collections(name=name, tenant=tenant, database=database)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\telemetry\opentelemetry\__init__.py", line 127, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\venvs\geo_backend\Lib\site-packages\chromadb\db\mixins\sysdb.py", line 435, in get_collections
+    rows = cur.execute(sql, params).fetchall()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: collections.topic
+INFO:     [10-09-2025 21:25:49] 127.0.0.1:59597 - "POST /api/v1/collections?tenant=default_tenant&database=default_database HTTP/1.1" 500
+INFO:     [11-09-2025 06:32:30] 127.0.0.1:61952 - "GET /api/v1/heartbeat HTTP/1.1" 200
+INFO:     [11-09-2025 06:32:31] 127.0.0.1:61958 - "GET /api/v1/heartbeat HTTP/1.1" 200
+INFO:     [11-09-2025 06:36:46] 127.0.0.1:62050 - "GET /api/v1/heartbeat HTTP/1.1" 200
+[33mWARNING[0m:  [13-09-2025 13:42:46] chroma_server_nofile is not supported on Windows. chroma_server_nofile will not be set.
+[32mINFO[0m:     [13-09-2025 13:42:47] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+[36mDEBUG[0m:    [13-09-2025 13:42:47] Starting component System
+[36mDEBUG[0m:    [13-09-2025 13:42:47] Starting component OpenTelemetryClient
+[36mDEBUG[0m:    [13-09-2025 13:42:47] Starting component SimpleAssignmentPolicy
+[36mDEBUG[0m:    [13-09-2025 13:42:47] Starting component SqliteDB
+[36mDEBUG[0m:    [13-09-2025 13:42:47] Starting component QuotaEnforcer
+[36mDEBUG[0m:    [13-09-2025 13:42:47] Starting component Posthog
+[36mDEBUG[0m:    [13-09-2025 13:42:47] Starting component LocalSegmentManager
+[36mDEBUG[0m:    [13-09-2025 13:42:47] Starting component SegmentAPI
+[32mINFO[0m:     [13-09-2025 13:42:48] Started server process [[36m13296[0m]
+[32mINFO[0m:     [13-09-2025 13:42:48] Waiting for application startup.
+[32mINFO[0m:     [13-09-2025 13:42:48] Application startup complete.
+[32mINFO[0m:     [13-09-2025 13:42:48] Uvicorn running on [1mhttp://0.0.0.0:8001[0m (Press CTRL+C to quit)
+[32mINFO[0m:     [13-09-2025 13:43:09] 127.0.0.1:57094 - "GET /api/v1/tenants/default_tenant HTTP/1.1" 200
+[32mINFO[0m:     [13-09-2025 13:43:09] 127.0.0.1:57094 - "GET /api/v1/databases/default_database?tenant=default_tenant HTTP/1.1" 200
+[31mERROR[0m:    [13-09-2025 13:43:13] no such column: collections.topic
+Traceback (most recent call last):
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\middleware\base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\anyio\streams\memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\server\fastapi\__init__.py", line 82, in catch_exceptions_middleware
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\middleware\base.py", line 159, in call_next
+    raise app_exc
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\middleware\base.py", line 182, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\middleware\base.py", line 184, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\server\fastapi\__init__.py", line 96, in check_http_version_middleware
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\middleware\base.py", line 159, in call_next
+    raise app_exc
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\fastapi\routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\fastapi\routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\starlette\concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\anyio\to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\telemetry\opentelemetry\__init__.py", line 127, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\auth\fastapi.py", line 241, in wrapped
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\server\fastapi\__init__.py", line 415, in create_collection
+    return self._api.create_collection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\telemetry\opentelemetry\__init__.py", line 127, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\api\segment.py", line 167, in create_collection
+    coll, created = self._sysdb.create_collection(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\telemetry\opentelemetry\__init__.py", line 127, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\db\mixins\sysdb.py", line 209, in create_collection
+    existing = self.get_collections(name=name, tenant=tenant, database=database)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\telemetry\opentelemetry\__init__.py", line 127, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\.venv\Lib\site-packages\chromadb\db\mixins\sysdb.py", line 435, in get_collections
+    rows = cur.execute(sql, params).fetchall()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: collections.topic
+[32mINFO[0m:     [13-09-2025 13:43:13] 127.0.0.1:57100 - "POST /api/v1/collections?tenant=default_tenant&database=default_database HTTP/1.1" 500

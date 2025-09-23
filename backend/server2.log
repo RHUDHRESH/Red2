@@ -1,0 +1,22 @@
+C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\main.py:236: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+C:\Users\hp\OneDrive\Desktop\Redemption\geo_strategist_app\backend\main.py:290: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("shutdown")
+INFO:     Started server process [23108]
+INFO:     Waiting for application startup.
+2025-09-10 11:29:02,914 - INFO - Starting up Geo-Strategist AI API...
+2025-09-10 11:29:02,914 - INFO - Google Maps API Key Status: OK
+2025-09-10 11:29:02,914 - INFO - Ollama URL: http://localhost:11434
+2025-09-10 11:29:02,915 - INFO - [services] \u25b6 initializing shared services …
+2025-09-10 11:29:02,915 - INFO - API queries_quota: 60
+2025-09-10 11:29:02,915 - ERROR - Failed to initialize services: Using http2=True, but the 'h2' package is not installed. Make sure to install httpx using `pip install httpx[http2]`.
