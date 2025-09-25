@@ -39,27 +39,15 @@ def get_vectorstore():
         return _vectorstore
     try:
         # Try shared services first
-        try:
-            services = get_services()
-            if services.vectorstore is not None:
-                _vectorstore = services.vectorstore
-                return _vectorstore
-            embeddings = services.embeddings
-        except Exception:
-            embeddings = OllamaEmbeddings(model=settings.OLLAMA_EMBEDDINGS_MODEL)
-
-        client = chromadb.HttpClient(host=settings.CHROMA_HOST, port=settings.CHROMA_PORT)
-        _vectorstore = Chroma(
-            client=client,
-            collection_name="playbook_templates",
-            embedding_function=embeddings,
-        )
-        logger.info(
-            f"Connected to ChromaDB collection 'playbook_templates'. Count: {_vectorstore._collection.count()}"
-        )
-        return _vectorstore
+        services = get_services()
+        if services.vectorstore is not None:
+            _vectorstore = services.vectorstore
+            return _vectorstore
+        else:
+            logger.warning("ChromaDB service is disabled in the services registry")
+            return None
     except Exception as e:
-        logger.warning(f"ChromaDB not available at {settings.CHROMA_HOST}:{settings.CHROMA_PORT} - {e}")
+        logger.warning(f"ChromaDB not available - {e}")
         return None
 
 # --- Agent States ---
