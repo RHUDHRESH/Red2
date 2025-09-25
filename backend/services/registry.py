@@ -203,14 +203,7 @@ def init_services() -> Services:
     notion = NotionService(oauth)
     discord = DiscordService(bot_token=os.getenv('DISCORD_BOT_TOKEN'))
     calendar_sync = CalendarSyncService(gcal)
-    vectorstore: Optional[Chroma]
-    try:
-        client = chromadb.HttpClient(host=settings.CHROMA_HOST, port=settings.CHROMA_PORT)
-        vectorstore = Chroma(client=client, collection_name="playbook_templates", embedding_function=embeddings)
-        logger.info("[services] ✅ connected to ChromaDB 'playbook_templates'")
-    except Exception as e:
-        logger.warning(f"[services] ⚠ ChromaDB not available: {e}")
-        vectorstore = None
+    vectorstore = None  # ChromaDB disabled
 
     _services = Services(
         maps=maps,
