@@ -1,0 +1,1 @@
+from main import app  # Expose FastAPI app for supervisor (expects module:app)
