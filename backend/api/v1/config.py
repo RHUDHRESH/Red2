@@ -89,13 +89,8 @@ async def health_details(request: Request):
         "reachable": False,
         "host": settings.CHROMA_HOST,
         "port": settings.CHROMA_PORT,
+        "disabled": True,
     }
-    try:
-        async with httpx.AsyncClient(timeout=2.0) as client:
-            r = await client.get(f"http://{settings.CHROMA_HOST}:{settings.CHROMA_PORT}/api/v1/heartbeat")
-            chroma["reachable"] = r.status_code == 200
-    except Exception:
-        pass
 
     versions = {
         "python": sys.version.split(" ")[0],
