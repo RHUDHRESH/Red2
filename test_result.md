@@ -31,3 +31,29 @@ notes:
 - Will use UUIDs for all IDs and avoid Mongo ObjectId in payloads.
 - Will not change protected .env URLs or ports.
 - For LLM integration beyond Ollama, will use Emergent Integrations and Universal Key if approved.
+
+backend_smoke_test:
+  test_date: "2024-12-19"
+  test_agent: "testing"
+  backend_url: "http://localhost:8001"
+  results:
+    - endpoint: "/api/v1/health"
+      method: "GET"
+      status: "PASS"
+      status_code: 200
+      response: {"status": "ok"}
+      notes: "Health endpoint working correctly"
+    - endpoint: "/api/v1/config/health/details"
+      method: "GET" 
+      status: "PASS"
+      status_code: 200
+      backend_ok: true
+      ollama_reachable: false
+      chroma_reachable: false
+      notes: "Health details endpoint working correctly. Backend marked as ok. Ollama and Chroma not required for basic functionality."
+    - endpoint: "/"
+      method: "GET"
+      status: "PASS"
+      status_code: 200
+      notes: "Root endpoint returns HTML page with API links (non-critical test)"
+  summary: "All 3 smoke tests passed. Backend basic health verified successfully. No external service dependencies required for core health endpoints."
