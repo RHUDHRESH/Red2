@@ -121,7 +121,7 @@ class Services:
     llm_fast: ChatOllama
     llm_reasoning: ChatOllama
     embeddings: OllamaEmbeddings
-    vectorstore: Optional[Chroma]
+    vectorstore: Optional[object]
 
 
 _services: Optional[Services] = None
