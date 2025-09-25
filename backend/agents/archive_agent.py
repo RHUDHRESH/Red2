@@ -3,11 +3,9 @@ import logging
 import json
 from typing import TypedDict, List
 
-import chromadb
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
-from langchain_community.vectorstores.chroma import Chroma
 from langchain_ollama.embeddings import OllamaEmbeddings
 from langchain_ollama.chat_models import ChatOllama
 from langgraph.graph import StateGraph, END
