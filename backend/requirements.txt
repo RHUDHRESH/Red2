@@ -36,7 +36,7 @@ mdurl==0.1.2
 motor==3.3.1
 mypy==1.18.2
 mypy_extensions==1.1.0
-numpy==2.3.3
+numpy==1.26.4
 oauthlib==3.3.1
 overrides==7.7.0
 packaging==25.0
