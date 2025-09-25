@@ -5,10 +5,8 @@ from dataclasses import dataclass
 from typing import Optional
 import os
 
-import chromadb
 from langchain_ollama.chat_models import ChatOllama
 from langchain_ollama.embeddings import OllamaEmbeddings
-from langchain_community.vectorstores.chroma import Chroma
 
 from core.config import settings
 from .google_maps_service import GoogleMapsService
