@@ -1,4 +1,20 @@
-# Geo-Strategist AI Technical Manual
+# Geo-Strategist AI
+
+Local-first marketing strategy engine. A FastAPI backend runs LangGraph agents for strategy, positioning, ICPs, content and outreach, and a React (Vite) UI sits on top. Model calls go through Ollama on your machine.
+
+> The current version of RaptorFlow is [RHUDHRESH/Raptorflow](https://github.com/RHUDHRESH/Raptorflow). This repository is an earlier product.
+
+**Stack:** Python (FastAPI, LangGraph, LangChain, Pydantic), ChromaDB, Ollama (Gemma 3, nomic-embed-text), React and Vite.
+
+**Quick start (Windows PowerShell):** from the repo root, run `.\dev.ps1 start`. It sets up the backend, starts ChromaDB, and opens the Vite UI at http://localhost:5173. The API docs are at http://localhost:8000/docs.
+
+Other `dev.ps1` commands: `bootstrap` (create the venv and install requirements) and `pull-models` (check Ollama and pull the models).
+
+This is a long manual. Use the [Table of Contents](#table-of-contents) to jump to a section.
+
+---
+
+## Technical Manual
 
 Version 1.2.0. Geo-Strategist AI is a local-first strategic marketing engine that combines a 
 FastAPI backend, LangGraph-powered agents, and a modular service registry. This manual documents
@@ -50,7 +66,7 @@ cheatsheet when navigating the codebase or planning deployments.
 - `web/`: Vite + React shell prepared for dashboard development with a proxy into the backend.
 - `frontend/index.html`: Tailwind-based concept UI demonstrating future layout possibilities.
 - `chroma_db/`: On-disk storage for ChromaDB collections when vector search is enabled.
-- `start.bat` and `dev.ps1`: Windows convenience scripts to spin up local environments quickly.
+- `dev.ps1`: Windows convenience script (`start`, `bootstrap`, `pull-models`) to set up and launch local environments.
 
 ## Dependency Matrix
 
@@ -68,7 +84,7 @@ available during development:
 Use these workflows to launch the stack on Windows. Recommend verifying dependencies before each
  run.
 
-- One-click: execute `start.bat` to install missing npm packages, launch FastAPI, spawn ChromaDB, and open the Vite UI.
+- One-click: run `.\dev.ps1 start` to bootstrap the environment, launch FastAPI and ChromaDB, and open the Vite UI.
 - Backend manual: `cd backend`, create `.venv`, install requirements, run `python main.py`.
 - Frontend manual: `cd web`, `npm install`, then `npm run dev` to serve the React shell on port 5173.
 - ChromaDB manual: `chroma run --path ./chroma_db --host 0.0.0.0 --port 8001` to enable embeddings.
@@ -1498,3 +1514,7 @@ chat_orchestrator | build_ics_event, calendar_service, get_services, make_simple
 - Supplemental note 1: Archive governance ensures stale entries rotate quarterly.
 - Supplemental note 2: Validate OAuth redirect URIs after any domain change.
 - Supplemental note 3: Keep agent prompt libraries versioned for reproducibility.
+
+---
+
+Built by [Rhudhresh R](https://github.com/RHUDHRESH)
